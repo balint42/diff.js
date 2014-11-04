@@ -18,10 +18,13 @@ but slower computation.
 Epsilon defaults to 0.1 if omitted but don't rely on that!
 
 Usage:
-<script type="text/javascript" src="diff.min.js"></script>
+
+\<script type="text/javascript" src="diff.min.js"\>\</script\>
+
 diff([1,2,3,4,3,2,1,0,1,2,3,4,5,6,7]);
 
 Will give:
+
 { minlist: [ [2, 4] ], maxlist: [ [6, 8] ] }
 
 because the only local min is at index 3 and the only local max is at index 7.
