@@ -90,7 +90,7 @@ diff = function(values, eps) {
                         }
                         minlist.push( [x[j], x[i]] );
                         s = 1;
-                        M = y[i-1];
+                        M = y[i];
                     }
                 }
             }
