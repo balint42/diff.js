@@ -5,7 +5,7 @@ Javascript library with functions for differentiation, integration
 and for finding local minima and maxima.
 
 `extrema` function
-
+------------------
 Find local maxima and minima in a list of values.
 
 This is a Javascript implementation of "A Linear-Time Algorithm That
@@ -24,13 +24,13 @@ minimum or maximum.
 Epsilon defaults to 0.1 if omitted but don't rely on that!
 
 `extremaXY` function
-
+--------------------
 Alternative version that takes vectors `[x]` and `[y]` instead of `[values]`
 as input and returns intervals that contain local minima and local maxima.
 `[x]` elements can be of any type.
 
 `diff` function
-
+---------------
 Calculate differential of a vector.
 
 Takes an object or array `X` with m numbers and returns an array
@@ -41,7 +41,7 @@ If as second parameter a number `n` is given, the returned array
 `Y` will be the n-th differential, thus above step applied n-times.
 
 `integral` function
-
+-------------------
 Calculate one integral of a vector assuming that the variable constant
 is zero.
 
@@ -68,17 +68,24 @@ Include: \<script type="text/javascript" src="diff.min.js"\>\</script\>
 
 Usage:
 ```
+/* extrema & extremaXY
+ * -------------------*/
 // using arrays with with numeric indices
 A = extrema([1,2,3,4,3,2,1,0,1,2,3,4,5,6,7], "0.01");
-                 ^       ^local min   
-                 local max
+                   ^       ^local min   
+                   local max
 
 B = extremaXY([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], [1,2,3,4,3,2,1,0,1,2,3,4,5,6,7], "0.01");
-                                                       ^       ^local min   
-                                                       local max
+                                                           ^       ^local min   
+                                                           local max
 // using string indices
 C = extrema({"a":1,"b":2,"c":3,"d":4,"e":3,"f":2,"g":1,"h":0,"i":1,"j":2,"k":3,"l":4,"m":5,"n":6,"o":7});
 D = extremaXY(["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"], [1,2,3,4,3,2,1,0,1,2,3,4,5,6,7]);
+
+/* diff & integral
+ * -------------------*/
+
+diff()
 ```
 Will give:
 ```
