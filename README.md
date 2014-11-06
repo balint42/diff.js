@@ -65,7 +65,7 @@ Calculate differences of a vector.
 Takes an object or array `Y` with m numbers and returns an array `dY` with
 `m-1` numbers that constitutes the differences:
 
-`dY = [Y(2)-Y(1) Y(3)-Y(2) ... Y(m)-Y(m-1)]`
+`dY = [Y(2)-Y(1), Y(3)-Y(2), ... , Y(m)-Y(m-1)]`
 
 If `Y` are function values `f(1), f(2), ...` with a step size of 1,
 then `dY` constitutes the approximate derivative of `f`. For a different
@@ -101,7 +101,7 @@ with given vector `X`.
 Takes objects or arrays `X` and `Y` with `m` numbers and returns an array `dY`
 with `m-1` numbers that constitutes the approximate derivative:
 
-`dY = [(Y(2)-Y(1))/(X(2)-X(1))  (Y(3)-Y(2)/(X(3)-X(2)) ...
+`dY = [(Y(2)-Y(1))/(X(2)-X(1)), (Y(3)-Y(2)/(X(3)-X(2)), ... ,
        (Y(m)-Y(m-1))/((X(m)-X(m-1))]`
 
 If as second parameter a number `n` is given, the returned array
@@ -123,7 +123,7 @@ Calculate reverse differences of a vector.
 Takes an object or array Y with m numbers and returns an array `IY` with
 `m` numbers that constitutes the reverse differences:
 
-`[ ... -Y(m)-Y(m-1)-Y(m-2)  -Y(m)-Y(m-1)  -Y(m)]`
+`[ ... , -Y(m)-Y(m-1)-Y(m-2), -Y(m)-Y(m-1), -Y(m)]`
 
 If `Y` are function values `f(1), f(2), ...` with a step size of 1, then `IY`
 constitutes the approximate integral of `f`. For a different step size use integralXY.
@@ -160,10 +160,10 @@ with given vector X.
 Takes an object or array Y with m numbers and returns an array `X`
 with m numbers that constitutes the integral:
 
-`[ ...
-   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2)-Y(m-3)*(X(m-2)-X(m-3)
-   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2)
-   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)
+`[ ... ,
+   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2)-Y(m-3)*(X(m-2)-X(m-3),
+   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2),
+   -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1),
    -Y(m)*(X(m)-X(m-1))
 ]`
 
