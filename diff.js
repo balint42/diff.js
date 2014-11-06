@@ -1,15 +1,21 @@
-var diff, integral, extrema, extremaXY;
+var diff, diffXY, integral, integralXY, extrema, extremaXY;
 
 (function() {
     /**
-     * Calculate differential of a vector.
+     * Calculate differences of a vector.
      *
-     * Takes an object or array X with m numbers and returns an array
-     * Y with m-1 numbers that constitutes the differential:
-     * Y = [X(2)-X(1) X(3)-X(2) ... X(m)-X(m-1)]
+     * Takes an object or array Y with m numbers and returns an array
+     * dY with m-1 numbers that constitutes the differences:
+     * dY = [Y(2)-Y(1) Y(3)-Y(2) ... Y(m)-Y(m-1)]
+     * If Y are function values f(1), f(2), ... with a step size of 1,
+     * then dY constitutes the approximate derivative of f. For a different
+     * step size use diffXY.
+     * NOTE: For a step size other than 1, the differences do NOT constitute
+     * the approximate derivative and thus in those cases use diffXY if you
+     * want to get the derivative.
      *
      * If as second parameter a number n is given, the returned array
-     * Y will be the n-th differential, thus above step applied n-times.
+     * dY will be the n-th differential, thus above step applied n-times.
      *
      * @author Balint Morvai <balint@morvai.de>
      * @license http://en.wikipedia.org/wiki/MIT_License MIT License
@@ -18,61 +24,133 @@ var diff, integral, extrema, extremaXY;
      * @returns Array
      */
     diff = function(values, n) {
-        // recursive calls to get n-th differential
-        if(n > 1) {
-            values = diff(values, n-1);
-        }
-        // loop through 1,...,m-1 entries of values to get diff
-        var keys = Object.keys(values);
-        for (var k = 0; k < keys.length-1; k++) {
-            values[k] = values[keys[k+1]]-values[keys[k]];
-        }
-        values.pop(); // last element is old value, delete it
-
-        return values;
+        // make y enumerated and define x = 1, 2, 3, ...
+        var x, y;
+        y = enumerate(values);
+        x = Object.keys(y).map(Math.floor);
+        // call diffXY version
+        return diffXY(x, y, n);
     }
 
     /**
-     * Calculate one integral of a vector assuming that the variable
-     * constant is zero.
+     * Calculate approximate derivative of a vector Y, assuming
+     * that Y=f(X) with given vector X.
+     *
+     * Takes objects or arrays X and Y with m numbers and returns
+     * an array dY with m-1 numbers that constitutes the approximate
+     * derivative:
+     * dY = [(Y(2)-Y(1))/(X(2)-X(1))  (Y(3)-Y(2)/(X(3)-X(2)) ...
+     *       (Y(m)-Y(m-1))/((X(m)-X(m-1))]
+     *
+     * If as second parameter a number n is given, the returned array
+     * dY will be the n-th differential, thus above step applied n-times.
+     *
+     * @author Balint Morvai <balint@morvai.de>
+     * @license http://en.wikipedia.org/wiki/MIT_License MIT License
+     * @param x
+     * @param y
+     * @param n
+     * @returns Array
+     */
+    diffXY = function(x, y, n) {
+        // recursive calls to get n-th diff
+        if(n > 1) {
+            y = diffXY(x, y, n-1);
+            x.pop();
+        }
+        // loop through 1,...,m-1 entries of values to get diff
+        var keysX = Object.keys(x);
+        var keysY = Object.keys(y);
+        var len = Math.min(keysX.length-1, keysY.length-1);
+        for (var k = 0; k < len; k++) {
+            y[k] = (y[keysY[k+1]]-y[keysY[k]]) /
+                   (x[keysX[k+1]]-x[keysX[k]]);
+        }
+        y.pop(); // last element is old value, delete it
+
+        return y;
+    }
+
+    /**
+     * Calculate reverse differences of a vector.
      *
      * Takes an object or array Y with m numbers and returns an array
-     * X with m numbers that constitutes the differential:
+     * IY with m numbers that constitutes the reverse differences:
      * [ ... -Y(m)-Y(m-1)-Y(m-2)  -Y(m)-Y(m-1)  -Y(m)]
+     * If Y are function values f(1), f(2), ... with a step size of 1,
+     * then IY constitutes the approximate integral of f. For a different
+     * step size use integralXY.
+     *
+     * If as second parameter a number n is given, the returned array
+     * Y will be the n-th integral, thus above step applied n-times.
+     *
+     * NOTE: the integral cannot determine the original set of values
+     * before "diff" was applied, thus "integral(diff(values)) != values"
+     * due to the nature of integration and differentiation. However the
+     * shape of the result will be the same, the curve will only be
+     * shifted by a constant value. ("translation")
+     *
+     * @author Balint Morvai <balint@morvai.de>
+     * @license http://en.wikipedia.org/wiki/MIT_License MIT License
+     * @param values
+     * @param n
+     * @returns Array
+     */
+    integral = function(values, n) {
+        // make y enumerated and define x = 1, 2, 3, ...
+        var x, y;
+        y = enumerate(values);
+        x = Object.keys(y).map(Math.floor);
+        // call integralXY version
+        return integralXY(x, y, n);
+    }
+
+    /**
+     * Calculate approximate integral of a vector, assuming
+     * that Y=f(X) with given vector X.
+     *
+     * Takes an object or array Y with m numbers and returns an array
+     * X with m numbers that constitutes the integral:
+     * [ ...
+     *  -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2)-Y(m-3)*(X(m-2)-X(m-3)
+     *  -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)-Y(m-2)*(X(m-1)-X(m-2)
+     *  -Y(m)*(X(m)-X(m-1)-Y(m-1)*(X(m)-X(m-1)
+     *  -Y(m)*(X(m)-X(m-1))
+     * ]
      *
      * If as second parameter a number n is given, the returned array
      * X will be the n-th integral, thus above step applied n-times.
      *
      * NOTE: the integral cannot determine the original set of values
      * before "diff" was applied, thus "integral(diff(values)) != values"
-     * due to the nature of integration and differentiation. But due to
-     * the same nature the following always applies:
-     * "integral(diff(values)) + values(m) = values(1:m-1)"
-     * In other words: to reverse a "diff", apply an integral and add
-     * the last original value "values(m)" to all elements of the resulting
-     * array. Then append the last original value and you have the exact
-     * original "values" array.
+     * due to the nature of integration and differentiation. However the
+     * shape of the result will be the same, the curve will only be
+     * shifted by a constant value. ("translation")
      *
      * @author Balint Morvai <balint@morvai.de>
      * @license http://en.wikipedia.org/wiki/MIT_License MIT License
-     * @param values
+     * @param x
+     * @param y
      * @param n
-     * @param c
      * @returns Array
      */
-    integral = function(values, n) {
-        // recursive calls to get n-th integral
+    integralXY = function(x, y, n) {
+        // recursive calls to get n-th diff
         if(n > 1) {
-            values = integral(values, n-1);
+            y = integral(x, y, n-1);
         }
         // loop through m,...,1 entries of values to get integral
-        var keys = Object.keys(values);
-        values[keys.length-1] = -values[keys.length-1];
-        for (var k = keys.length-2; k >= 0; k--) {
-            values[k] = -values[keys[k]]+values[keys[k+1]];
+        var keysX = Object.keys(x);
+        var keysY = Object.keys(y);
+        var len = Math.min(keysX.length-1, keysY.length-1);
+        // NOTE: below we would need X(len+1) & Y(len+1) but both are missing;
+        // thus we assume "X(len+1)-X(len)=X(len)-X(len-1)" and "Y(len+1)=0"
+        y[len] = -y[len]*(x[keysX[len]]-x[keysX[len-1]]);
+        for (var k = len-1; k >= 0; k--) {
+            y[k] = -y[keysY[k]]*(x[keysX[k+1]]-x[keysX[k]])+y[keysY[k+1]];
         }
 
-        return values;
+        return y;
     }
 
     /**
@@ -101,20 +179,11 @@ var diff, integral, extrema, extremaXY;
      * @returns {minlist: Array, maxlist: Array}
      */
     extrema = function(values, eps) {
-        // declare local vars
+        // make y enumerated and define x = 1, 2, 3, ...
         var x, y;
-        // define x & y enumerated arrays
-        var enumerate = function(obj) {
-            var arr = [];
-            var keys = Object.keys(obj);
-            for (var k = 0; k < keys.length; k++) {
-                arr[k] = obj[keys[k]];
-            }
-            return arr;
-        }
         y = enumerate(values);
         x = Object.keys(y).map(Math.floor);
-        // call diff2 version
+        // call extremaXY version
         var res = extremaXY(x, y, eps);
         res.minlist = res.minlist.map(function(val) {
             var index = Math.floor((val[1] + val[0]) / 2);
@@ -215,5 +284,15 @@ var diff, integral, extrema, extremaXY;
         }
 
         return {minlist: minlist, maxlist: maxlist};
+    }
+
+    // helper to make an array or object an enumerated array
+    var enumerate = function(obj) {
+        var arr = [];
+        var keys = Object.keys(obj);
+        for (var k = 0; k < keys.length; k++) {
+            arr[k] = obj[keys[k]];
+        }
+        return arr;
     }
 }());
