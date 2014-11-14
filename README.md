@@ -79,10 +79,12 @@ If as second parameter a number `n` is given, the returned array
 
 Usage
 ```
-cos1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(Math.cos)];
-cos2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.cos)];
-sin1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(Math.sin)];
-sin2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.sin)];
+x1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+x2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+cos1 = x1.map(Math.cos)];
+cos2 = x2.map(Math.cos)];
+sin1 = x1.map(Math.sin)];
+sin2 = x2.map(Math.sin)];
 A = diff(sin1);
 B = diff(sin2);
 // result
@@ -109,9 +111,10 @@ If as second parameter a number `n` is given, the returned array
 
 Usage
 ```
-cos = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.cos)];
-sin = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.sin)];
-A = diffXY([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], sin);
+x = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+cos = x.map(Math.cos)];
+sin = x.map(Math.sin)];
+A = diffXY(x, sin);
 // result
 A ≈ cos // A is the approximate derivative of "sin"
 ```
@@ -139,10 +142,12 @@ shifted by a constant value. ("translation")
 
 Usage
 ```
-sin1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(Math.sin)];
-sin2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.sin)];
-cos1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(Math.cos)];
-cos2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.cos)];
+x1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+x2 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+cos1 = x1.map(Math.cos)];
+cos2 = x2.map(Math.cos)];
+sin1 = x1.map(Math.sin)];
+sin2 = x2.map(Math.sin)];
 A = integral(cos1);
 B = integral(cos2);
 // result
@@ -178,9 +183,10 @@ will be the same, the curve will only be shifted by a constant value.
 
 Usage
 ```
-sin = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.sin)];
-cos = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(Math.cos)];
-A = integral([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], cos);
+x = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+sin = x.map(Math.sin)];
+cos = x.map(Math.cos)];
+A = integral(x, cos);
 // result
 A ≈ sin // A is the approximate integral of "cos"
 ```
