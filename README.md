@@ -53,7 +53,7 @@ A = extremaXY([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], [1,2,3,4,3,2,1,0,1,2,3,4,5,6
 // using string indices
 B = extremaXY(["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"], [1,2,3,4,3,2,1,0,1,2,3,4,5,6,7], "0.01");
                                                                                             ^       ^local min                                                                                                    local max
-// resulting itervals in X that contain minima and maxima
+// resulting intervals in X that contain minima and maxima
 A = { minlist: [ [2, 4] ], maxlist: [ [6, 8] ] }
 B = { minlist: [ ["c", "e"] ], maxlist: [ ["g", "i"] ] }
 ```
